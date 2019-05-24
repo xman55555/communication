@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.communication.communication.dao.AddressDao" >
+    <resultMap id="BaseResultMap" type="com.communication.communication.entity.Address" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+        <result column="telephone2" property="telephone2" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="grouptype" property="grouptype" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, name, unit, telephone,telephone2,email,grouptype
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from Address_t
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from Address_t
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.communication.communication.entity.Address" >
+        insert into Address_t (id, name, unit,telephone,telephone2,email,grouptype
+        )
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
+        #{telephone,jdbcType=VARCHAR},#{telephone2,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{grouptype,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.communication.communication.entity.Address" >
+        insert into Address_t
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="unit != null" >
+                unit,
+            </if>
+            <if test="telephone != null" >
+                telephone,
+            </if>
+            <if test="telephone2 != null" >
+                telephone2,
+            </if>
+            <if test="email != null" >
+                email,
+            </if>
+            <if test="grouptype != null" >
+                grouptype
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null" >
+                #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone2 != null" >
+                #{telephone2,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="grouptype != null" >
+                #{grouptype,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.communication.communication.entity.Address" >
+        update Address_t
+        <set >
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null" >
+                unit= #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                telephone= #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone2 != null" >
+                telephone2=  #{telephone2,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email= #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="grouptype != null" >
+                grouptype= #{grouptype,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.communication.communication.entity.Address" >
+        update Address_t
+        set name = #{name,jdbcType=VARCHAR},
+         unit=#{unit,jdbcType=VARCHAR},
+         telephone= #{telephone,jdbcType=VARCHAR},
+         telephone2=  #{telephone2,jdbcType=VARCHAR},
+          email=  #{email,jdbcType=VARCHAR},
+         grouptype= #{grouptype,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="getAll" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from Address_t
+    </select>
+    <select id="findData" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from Address_t
+        where 1=1
+        <if test="name != null" >
+            AND name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="unit != null" >
+            AND unit= #{unit,jdbcType=VARCHAR},
+        </if>
+        <if test="telephone != null" >
+            AND telephone=#{telephone,jdbcType=VARCHAR},
+        </if>
+        <if test="telephone2 != null" >
+            AND telephone2= #{telephone2,jdbcType=VARCHAR},
+        </if>
+        <if test="email != null" >
+            AND email= #{email,jdbcType=VARCHAR},
+        </if>
+        <if test="grouptype != null" >
+            AND grouptype= #{grouptype,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>
