@@ -40,4 +40,15 @@ public class UserController {
     public String registerUser(){
         return "user/registerUser";
     }
+    @RequestMapping("/login")
+    public String login(){
+        User user=new User();
+        return "login";
+    }
+    @RequestMapping("/login1")
+    public String login1(HttpServletRequest request){
+        String  username=request.getParameter("username");
+        String  password=request.getParameter("password");
+        return "index";
+    }
 }

@@ -1,0 +1,171 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>通讯录</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}" >
+    <link rel="stylesheet" th:href="@{/css/bootstrap-theme.css}" >
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-table.css}" >
+    <script th:src="@{/js/jquery-3.2.1.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script  th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/bootstrap-table.js}"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/xman/index">通讯录</a>
+        <a id="menu-btn" class="navbar-brand visible-xs" style="float: right;">
+            <!--<img src="image/menu.svg" width="20" height="20" data-toggle="menu">-->
+        </a>
+    </div>
+
+    <div id="menu" class="hidden-xs">
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a th:if="${groups!=null}">修改通讯录</a>
+                <a th:unless="${groups!=null}" >新增通讯录</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div id="wrap">
+    <div class="row">
+        <div class="col-md-2 hidden-xs" id="left-side">
+            <ul class="list-unstyled sidebar">
+                <!-- <li class="active" onclick="change('1')" style="width: 100%"><a href="javascript:void(0);">名单</a></li>-->
+                <li onclick="change('2')" th:if="${groups!=null}"><a href="javascript:void(0);">修改通讯录</a></li>
+                <li onclick="change('2')" th:unless="${groups!=null}"><a href="javascript:void(0);">新增通讯录</a></li>
+                <!--  <li><a>还没想好放啥</a></li>
+                  <li><a>你说放个啥好</a></li>-->
+            </ul>
+        </div>
+        <div class="col-md-10" id="right-side">
+
+            <!--姓名、工作单位、电话号码1、电话号码2、电子邮箱、自定义分组；-->
+            <div>
+                <form id="addAddress" >
+                    <table class="table table-condensed table-hover" width="100%" border="1" id="addTable">
+                        <thead>
+                        <th colspan="4" th:if="${groups!=null}" align="center">修改通讯录</th>
+                        <th colspan="4"  th:unless="${groups!=null}" align="center">新增通讯录</th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="2" align="right">组名称</td>
+                            <td colspan="2" align="left">
+                                <input type="text" th:if="${groups!=null}" id="groupName" name="groupName"  th:value="${groups.groupName}"/>
+                                <input type="text" th:unless="${groups!=null}" id="groupName" name="groupName"  />
+                                <input type="hidden" th:if="${groups!=null}" id="grouptype" name="grouptype" th:value="${groups.grouptype}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">组描述</td>
+                            <td colspan="2" align="left">
+                                <input type="text" th:if="${groups!=null}" id="groupDescribe" name="groupDescribe"  th:value="${groups.groupDescribe}"/>
+                                <input type="text"  th:unless="${groups!=null}" id="groupDescribe" name="groupDescribe" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="4">
+                                <input type="button"   th:if="${groups!=null}"onclick="editAddr()" value="修改" />
+                                <input type="button"  th:unless="${groups!=null}" onclick="add()" value="新增" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    function change(obj) {
+        if (obj == "1") {
+            $("#showTable").show();
+            $("#addTable").hide();
+        }
+        if (obj == "2") {
+            $("#addTable").show();
+            $("#showTable").hide();
+        }
+    }
+    function add() {
+        var groupName = $("#groupName").val() || "";
+        var groupDescribe = $("#groupDescribe").val() || "";
+        if (groupName == "") {
+            alert("请填写组名称!");
+            return false;
+        }
+        if (groupDescribe == "") {
+            alert("请填写组描述!");
+            return false;
+        }
+        $.ajax(
+            {
+                type: "post",
+                url: "/xman/group/addGroup",
+                data: {
+                    groupName: groupName,
+                    groupDescribe: groupDescribe,
+                },
+                dateType: "json",
+                success: function (data) {
+                    if (data.result == "success") {
+                        alert("新增成功!");
+                        goUrl("/xman/group/toGroups");
+                    }
+                }
+            }
+        )
+    }
+    function editAddr() {
+        var groupName = $("#groupName").val() || "";
+        var grouptype = $("#grouptype").val() || "";
+        var groupDescribe = $("#groupDescribe").val() || "";
+        if (groupName == "") {
+            alert("请填写组名称!");
+            return false;
+        }
+        if (groupDescribe == "") {
+            alert("请填写组描述!");
+            return false;
+        }
+        $.ajax(
+            {
+                type: "post",
+                url: "/xman/group/editGroup",
+                data: {
+                    grouptype:grouptype,
+                    groupName: groupName,
+                    groupDescribe: groupDescribe,
+                },
+                dateType: "json",
+                success: function (data) {
+                    if (data.result == "success") {
+                        alert("新增成功!");
+                        goUrl("/xman/group/toGroups");
+                    }
+                }
+            }
+        )
+    }
+
+    function eidt(obj) {
+        var id = $(obj).attr("value");
+        alert(id);
+    }
+
+    function goUrl(url) {
+        window.location = url;
+    }
+</script>
+</html>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.communication.communication.dao.GroupsDao" >
+    <resultMap id="BaseResultMap" type="com.communication.communication.entity.Groups" >
+        <id column="grouptype" property="grouptype" jdbcType="VARCHAR" />
+        <result column="groupName" property="groupName" jdbcType="VARCHAR" />
+        <result column="groupDescribe" property="groupDescribe" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        grouptype, groupName, groupDescribe
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from Groups_t
+        where grouptype = #{grouptype,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from Groups_t
+        where grouptype = #{grouptype,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.communication.communication.entity.Address" >
+        insert into Groups_t (grouptype, groupName, groupDescribe
+        )
+        values (#{grouptype,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{groupDescribe,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.communication.communication.entity.Address" >
+        insert into Groups_t
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="grouptype != null" >
+                grouptype,
+            </if>
+            <if test="groupName != null" >
+                groupName,
+            </if>
+            <if test="groupDescribe != null" >
+                groupDescribe,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="grouptype != null" >
+                #{grouptype,jdbcType=VARCHAR},
+            </if>
+            <if test="groupName != null" >
+                #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="groupDescribe != null" >
+                #{groupDescribe,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.communication.communication.entity.Address" >
+        update Groups_t
+        <set >
+            <if test="groupName != null" >
+                groupName = #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="groupDescribe != null" >
+                groupDescribe= #{groupDescribe,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where grouptype = #{grouptype,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.communication.communication.entity.Address" >
+        update Groups_t
+        set groupName = #{groupName,jdbcType=VARCHAR},
+         groupDescribe= #{groupDescribe,jdbcType=VARCHAR}
+        where grouptype = #{grouptype,jdbcType=VARCHAR}
+    </update>
+    <select id="getAll" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from Groups_t
+    </select>
+    <select id="findData" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from Groups_t
+        where 1=1
+        <if test="groupName != null" >
+            AND groupName = #{groupName,jdbcType=VARCHAR},
+        </if>
+        <if test="groupDescribe != null" >
+            AND groupDescribe= #{groupDescribe,jdbcType=VARCHAR},
+        </if>
+    </select>
+</mapper>

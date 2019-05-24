@@ -1,8 +1,10 @@
 package com.communication.communication;
 
+import com.communication.communication.config.SpringApplicationContextUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 /**
  * 简单的通讯录程序设计
@@ -18,8 +20,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.communication.communication.dao")
 public class CommunicationApplication {
 
+
     public static void main(String[] args) {
-        SpringApplication.run(CommunicationApplication.class, args);
+        ApplicationContext run= SpringApplication.run(CommunicationApplication.class, args);
+        SpringApplicationContextUtil.setApplicationContext(run);
     }
 
 }

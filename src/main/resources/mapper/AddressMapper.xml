@@ -114,8 +114,14 @@
     </update>
     <select id="getAll" resultMap="BaseResultMap" >
         select
-        <include refid="Base_Column_List" />
-        from Address_t
+         Address_t.id,
+         Address_t.name,
+         Address_t.unit,
+         Address_t.telephone,
+         Address_t.telephone2,
+         Address_t.email,
+        Groups_t.groupName as  grouptype
+        from Address_t left join Groups_t on Address_t.grouptype=Groups_t.grouptype
     </select>
     <select id="findData" resultMap="BaseResultMap" >
         select

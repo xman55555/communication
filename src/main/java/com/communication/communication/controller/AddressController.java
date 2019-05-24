@@ -5,8 +5,8 @@ import com.communication.communication.Utils.Utils;
 import com.communication.communication.entity.Address;
 import com.communication.communication.entity.User;
 import com.communication.communication.service.AddressService;
+import com.communication.communication.service.GroupService;
 import com.communication.communication.service.UserService;
-import com.mysql.cj.xdevapi.JsonArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,33 +27,45 @@ import java.util.Map;
 @Controller
 public class AddressController  {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
+    @Resource
+    private GroupService groupService;
+    @Resource
     private AddressService addressService;
     private final static Logger logger = LoggerFactory.getLogger(AddressController.class);
-    @RequestMapping("/address")
-    public String addrIndex(){
-        return "address";
+
+    private void getGroupS(Model model){
+        model.addAttribute("groupList",groupService.getAllList());
     }
-    @RequestMapping("/login")
-    public String login(){
-        User user=new User();
-        return "login";
-    }
-    @RequestMapping("/login1")
-    public String login1(HttpServletRequest request){
-        String  username=request.getParameter("username");
-        String  password=request.getParameter("password");
-        return "index";
+
+    @RequestMapping("/")
+    public String index1( Model model){
+        List<Address> addressesList=new ArrayList<Address>();
+        addressesList=addressService.getAllList();
+        model.addAttribute("addressesList",addressesList);
+        return "address/index";
     }
     @RequestMapping("/index")
     public String index( Model model){
         List<Address> addressesList=new ArrayList<Address>();
         addressesList=addressService.getAllList();
         model.addAttribute("addressesList",addressesList);
-        return "index";
+        return "address/index";
     }
+    @RequestMapping("/toAddressAdd")
+    public String toAddressAdd( Model model,Address record){
+        getGroupS(model);
+        return "address/addressAdd";
+    }
+    @RequestMapping("/toEditAddress")
+    public String toEditAddress( Model model,Address record){
+        if(!StringUtils.isEmpty(record.getId())){
+            Address address=addressService.getAddressById(record.getId());
+            model.addAttribute("address",address);
+        }
+        getGroupS(model);
+        return "address/editAddress";
+    }
+
     @RequestMapping("/addAddress")
     @ResponseBody
     public Map<String ,String>  addAddress( Model model,Address record){
@@ -66,21 +79,6 @@ public class AddressController  {
         }
         return resultmap;
     }
-
-
-    @RequestMapping("/toAddressAdd")
-    public String toAddressAdd( Model model,Address record){
-        return "addressAdd";
-    }
-    @RequestMapping("/toEditAddress")
-    public String toEditAddress( Model model,Address record){
-        if(!StringUtils.isEmpty(record.getId())){
-            Address address=addressService.getAddressById(record.getId());
-            model.addAttribute("address",address);
-        }
-        return "editAddress";
-    }
-
     @RequestMapping("/editAddress")
     @ResponseBody
     public Map<String ,String>  editAddress( Model model,Address record){
@@ -126,4 +124,5 @@ public class AddressController  {
         }
         return resultmap;
     }
+
 }
