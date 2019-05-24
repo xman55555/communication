@@ -19,9 +19,8 @@
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">通讯录</a>
+        <a class="navbar-brand" href="/xman/index">通讯录</a>
         <a id="menu-btn" class="navbar-brand visible-xs" style="float: right;">
-            <!--<img src="image/menu.svg" width="20" height="20" data-toggle="menu">-->
         </a>
     </div>
 
@@ -45,7 +44,7 @@
             <div class="form-grouptype">
                 <input type="text" class="form-control" placeholder="Search">
             </div>
-            <button type="submit" class="btn btn-default">查找</button>
+            <input type="button" class="btn btn-default" value="查找"></input>
         </form>
     </div>
 </nav>
@@ -54,9 +53,6 @@
         <div class="col-md-2 hidden-xs" id="left-side">
             <ul class="list-unstyled sidebar">
                 <li class="active" onclick="change('1')" style="width: 100%"><a href="javascript:void(0);">通讯录数据</a></li>
-                <!--<li onclick="change('2')"><a href="javascript:void(0);">添加通讯录</a></li>-->
-                <!--  <li><a>还没想好放啥</a></li>
-                  <li><a>你说放个啥好</a></li>-->
             </ul>
         </div>
         <div class="col-md-10" id="right-side">
@@ -86,68 +82,12 @@
                             <td th:text="${emp.email}">18621532902</td>
                             <td th:text="${emp.grouptype}">18621532902</td>
                             <td>
-                                <button th:value="${emp.id}" onclick="eidt(this)">
-                                    修改
-                                </button>
-                                <button th:value="${emp.id}" onclick="delete1(this)">
-                                    删除
-                                </button>
+                                <input type="button" th:addrid="${emp.id}" onclick="eidt(this)" value="修改" />
+                                <input type="button" th:addrid="${emp.id}" onclick="delete1(this)" value="删除" />
                             </td>
                         </tr>
                         </tbody>
                     </table>
-                <!--<form id="addAddress">
-                    <table class="table table-condensed table-hover" width="100%" border="1" id="addTable"
-                           style="display: none">
-
-                        <thead>
-                        <th colspan="4" align="center">添加通讯录</th>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td colspan="2" align="right">姓名</td>
-                            <td colspan="2" align="left">
-                                <input type="text" id="name" name="name"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="right">工作单位</td>
-                            <td colspan="2" align="left">
-                                <input type="text" id="unit" name="unit"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="right">电话号码1</td>
-                            <td colspan="2" align="left">
-                                <input type="text" id="telephone" name="telephone"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="right">电话号码2</td>
-                            <td colspan="2" align="left">
-                                <input type="text" id="telephone2" name="telephone2"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="right">电子邮箱</td>
-                            <td colspan="2" align="left">
-                                <input type="text" id="email" name="email"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="right">自定义分组</td>
-                            <td colspan="2" align="left">
-                                <input type="text" id="grouptype" name="grouptype"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center" colspan="4">
-                                <button onclick="addAddr()">添加</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </form>-->
             </div>
 
         </div>
@@ -206,7 +146,7 @@
     }
 
     function delete1(obj) {
-        var id = $(obj).attr("value");
+        var id = $(obj).attr("addrid");
         //改成ajax 获取!
         $.ajax(
             {
@@ -254,12 +194,9 @@
                             htmlShow+="<td>"+item.email+"</td>";
                             htmlShow+="<td>"+item.grouptype+"</td>";
                             htmlShow+=" <td>\n" +
-                                "                                <button value=\""+item.id+"\" onclick=\"eidt(this)\">\n" +
-                                "                                    修改\n" +
-                                "                                </button>\n" +
-                                "                                <button value=\""+item.id+"\" onclick=\"delete1(this)\">\n" +
-                                "                                    删除\n" +
-                                "                                </button>\n" +
+                                "                                <input type='button' value='修改' addrid=\""+item.id+"\" onclick=\"eidt(this)\" />\n"
+                                +
+                                "                                <input type='button' value='删除' addrid=\""+item.id+"\" onclick=\"delete1(this)\" >\n" +
                                 "                            </td>";
 
                             htmlShow+="</tr>";
@@ -274,13 +211,13 @@
     }
 
     function eidt(obj) {
-        var id = $(obj).attr("value");
+        var id = $(obj).attr("addrid");
         debugger;
        /* $("#search").attr("action", "/xman/editAddress?id"+id);
         $("#search").submit();*/
        var url="/xman/toEditAddress?id="+id;
-        window.open(url)
-        //window.location(url);
+       // window.open(url)
+        window.location.href=url;
     }
 </script>
 </html>
